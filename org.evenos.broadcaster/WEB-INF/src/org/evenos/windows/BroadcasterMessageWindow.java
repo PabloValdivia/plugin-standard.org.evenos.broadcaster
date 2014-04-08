@@ -8,6 +8,7 @@ import org.adempiere.webui.component.Label;
 import org.adempiere.webui.component.Textbox;
 import org.adempiere.webui.component.Window;
 import org.adempiere.webui.factory.ButtonFactory;
+import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.evenos.util.UserPOJO;
@@ -42,6 +43,8 @@ public class BroadcasterMessageWindow extends Window implements EventListener<Ev
 	
 	Button btnCancel;
 	Button btnOk;
+	
+	private CLogger log = CLogger.getCLogger(BroadcasterMessageWindow.class);
 	
 	
 	public BroadcasterMessageWindow(Integer currentUser, Integer ad_client_id, Integer ad_org_id, Integer ad_role_id, Integer ad_user_id, Integer c_country_id, Integer c_region_id) {
@@ -199,7 +202,7 @@ public class BroadcasterMessageWindow extends Window implements EventListener<Ev
 			if(val <= 0)
 				return;
 		}
-		System.out.println("Broadcast to user: " + ad_user_id);
+		log.info("Broadcast to user: " + ad_user_id);
 		
 		MBroadcastMessage msg = new MBroadcastMessage(Env.getCtx(), 0, null);
 		msg.setBroadcastMessage(text.getText());
