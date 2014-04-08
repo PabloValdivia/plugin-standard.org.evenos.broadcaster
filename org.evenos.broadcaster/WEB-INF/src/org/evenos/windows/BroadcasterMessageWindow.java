@@ -122,8 +122,8 @@ public class BroadcasterMessageWindow extends Window implements EventListener<Ev
 		borderlayout.appendChild(southPane);
 		Hbox hbox = new Hbox();
 		hbox.setStyle("float: right");
-		hbox.appendChild(btnCancel);
 		hbox.appendChild(btnOk);
+		hbox.appendChild(btnCancel);
 		southPane.appendChild(hbox);
 		
 
