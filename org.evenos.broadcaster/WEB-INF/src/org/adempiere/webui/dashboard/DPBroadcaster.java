@@ -66,7 +66,6 @@ public class DPBroadcaster extends DashboardPanel implements EventListener<Event
 		
 		@Override
 		public void updateUI() {
-			// TODO Auto-generated method stub
 			model.refresh();
 		}
 		
@@ -204,23 +203,16 @@ public class DPBroadcaster extends DashboardPanel implements EventListener<Event
 
 	@Override
 	public void onMessage(Map<String,Integer> message) {
-
-		
 		
 		try{
-		//TODO: Fix me, i'm throwing errors...	
-		if(message.keySet().contains(ON_USER_LOGGED_IN_TOPIC)){
-			treeModel.userLoggedIn(message.get(ON_USER_LOGGED_IN_TOPIC));
-		}else if(message.keySet().contains(ON_USER_LOGGED_OUT_TOPIC))
-			treeModel.userLoggedOut(message.get(ON_USER_LOGGED_OUT_TOPIC));
+			if(message.keySet().contains(ON_USER_LOGGED_IN_TOPIC)){
+				treeModel.userLoggedIn(message.get(ON_USER_LOGGED_IN_TOPIC));
+			}else if(message.keySet().contains(ON_USER_LOGGED_OUT_TOPIC))
+				treeModel.userLoggedOut(message.get(ON_USER_LOGGED_OUT_TOPIC));
 		}catch(Exception e){
-			e.printStackTrace();
-			System.out.println(e.getStackTrace());
-			System.out.println(e);
-			System.out.println(e.getCause());
-			System.out.println(e.getLocalizedMessage());
-			
+			log.severe("Error during update of BroadcasterTreeModel: "+e);			
 		}
+
 		template.executeAsync(callback);
 		
 	}

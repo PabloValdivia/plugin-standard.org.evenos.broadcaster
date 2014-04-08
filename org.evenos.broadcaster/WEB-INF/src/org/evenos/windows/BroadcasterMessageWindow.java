@@ -1,11 +1,5 @@
 package org.evenos.windows;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
-
-import org.adempiere.exceptions.DBException;
 import org.adempiere.model.MBroadcastMessage;
 import org.adempiere.webui.LayoutUtils;
 import org.adempiere.webui.component.Button;
@@ -14,8 +8,6 @@ import org.adempiere.webui.component.Label;
 import org.adempiere.webui.component.Textbox;
 import org.adempiere.webui.component.Window;
 import org.adempiere.webui.factory.ButtonFactory;
-import org.compiere.model.MUser;
-import org.compiere.model.Query;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.evenos.util.UserPOJO;

@@ -23,7 +23,6 @@ import org.zkoss.zul.Treecell;
 import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.TreeitemRenderer;
 import org.zkoss.zul.Treerow;
-import org.zkoss.zul.ext.TreeOpenableModel;
 import org.zkoss.zul.ext.TreeSelectableModel;
 
 public class BroadcasterTreeModel extends DefaultTreeModel<Object> implements TreeSelectableModel,

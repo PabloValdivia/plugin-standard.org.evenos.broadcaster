@@ -21,29 +21,24 @@ public class BroadcasterTreeNode<E> extends DefaultTreeNode<E> {
 	
 	public BroadcasterTreeNode(E data) {
 		super(data);
-		// TODO Auto-generated constructor stub
 	}
 
 	public BroadcasterTreeNode(E data, boolean nullAsMax) {
 		super(data, nullAsMax);
-		// TODO Auto-generated constructor stub
 	}
 
 	public BroadcasterTreeNode(E data,
 			Collection<? extends TreeNode<E>> children) {
 		super(data, children);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public BroadcasterTreeNode(E data,
 			Collection<? extends TreeNode<E>> children, boolean nullAsMax) {
 		super(data, children, nullAsMax);
-		// TODO Auto-generated constructor stub
 	}
 
 	public BroadcasterTreeNode(E data, TreeNode<E>[] children) {
 		super(data, children);
-		// TODO Auto-generated constructor stub
 	}
 
 }
