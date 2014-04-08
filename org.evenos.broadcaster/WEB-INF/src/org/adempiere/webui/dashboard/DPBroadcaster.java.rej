@@ -1,0 +1,49 @@
+--- DPBroadcaster.java
++++ DPBroadcaster.java
+@@ -14,6 +14,7 @@
+ import org.adempiere.webui.component.Checkbox;
+ import org.adempiere.webui.component.Combobox;
+ import org.adempiere.webui.component.Label;
++import org.adempiere.webui.component.Textbox;
+ import org.adempiere.webui.theme.ThemeManager;
+ import org.adempiere.webui.util.ServerPushTemplate;
+ import org.compiere.model.MBPartnerLocation;
+@@ -67,6 +68,7 @@
+ 	private Div headerArea = new Div();
+ 	private Checkbox checkboxIsOnline = new Checkbox();
+ 	private Combobox comboboxFilterTyp = new Combobox();
++	private Textbox filterUser = new Textbox();
+ 
+ 	private Properties ctx = Env.getCtx();
+ 	private int ad_user_id = Env.getContextAsInt(Env.getCtx(), "#AD_User_ID");
+@@ -134,11 +136,15 @@
+ 
+ 		contentArea.appendChild(tree);
+ 
+-		
++		filterUser.addEventListener(Events.ON_BLUR, this);
+ 		checkboxIsOnline.addEventListener(Events.ON_CLICK, this);
+ 		
+ 		//Add Combobox and Checkbox to header area
+ 		Hbox box = new Hbox();
++		
++		box.appendChild(new Label("User name"));
++		box.appendChild(filterUser);
++		
+ 		Label labelIsOnline = new Label("Online Users only");
+ 		checkboxIsOnline.setTooltiptext("Check thic Checkbox to only display online users");
+ 		box.appendChild(labelIsOnline);
+@@ -162,7 +168,12 @@
+ 			}else{
+ 				doOnClick(comp);
+ 			}			
+-		}		
++		}
++		else if (event.getName().equals(Events.ON_BLUR)) {
++			filterUser.setValue(filterUser.getValue().trim());
++			if (filterUser.getValue().length() > 2)
++				treeModel.setFilterUserName(filterUser.getValue());			
++		}
+ 	}
+ 	
+ 	private <T> void doOnClick(Component comp) {

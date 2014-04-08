@@ -1,0 +1,84 @@
+--- BroadcasterTreeModel.java
++++ BroadcasterTreeModel.java
+@@ -11,6 +11,7 @@
+ import org.compiere.util.CLogger;
+ import org.compiere.util.Env;
+ import org.compiere.util.KeyNamePair;
++import org.compiere.util.Util;
+ import org.evenos.util.UserPOJO;
+ import org.zkoss.zk.ui.event.Event;
+ import org.zkoss.zk.ui.event.EventListener;
+@@ -38,6 +39,8 @@
+ 	private Map<Integer, List<UserPOJO>> users;
+ 	
+ 	private boolean onlyOnlineUsers;
++	
++	private String filterName = "";
+ 
+ 	public static final String ATTR_AD_CLIENT_ID = "ATTR_AD_CLIENT_ID";
+ 	public static final String ATTR_AD_ORG_ID = "ATTR_AD_ORG_ID";
+@@ -53,6 +56,7 @@
+ 		this.ad_user_id = ad_user_id;
+ 		this.users = UserPOJO.findVisibleUsers(ad_user_id);
+ 		this.onlyOnlineUsers = onlyOnlineUsers;
++		this.filterName = "";
+ 		
+ 		refresh();
+ 	}
+@@ -86,7 +90,10 @@
+ 				
+ 				if(this.onlyOnlineUsers && !pojo.isOnline || pojo.C_Country_ID == 0 || pojo.C_Region_ID == 0)
+ 					continue;
+-				
++
++				if (!Util.isEmpty(this.filterName) && !pojo.Username.toUpperCase().contains(this.filterName.toUpperCase()))
++					continue;
++
+ 				Map<Integer,Map<Integer, List<UserPOJO>>> region_user_map = country_region_user_map.get(new Integer(pojo.C_Country_ID));
+ 				if(region_user_map == null)
+ 					region_user_map = new TreeMap<Integer,Map<Integer,List<UserPOJO>>>();
+@@ -164,7 +171,10 @@
+ 				
+ 				if(this.onlyOnlineUsers && !pojo.isOnline)
+ 					continue;
+-				
++
++				if (!Util.isEmpty(this.filterName) && !pojo.Username.toUpperCase().contains(this.filterName.toUpperCase()))
++					continue;
++
+ 				Map<Integer, List<UserPOJO>> user_map = role_user_map.get(new Integer(pojo.AD_Role_ID));
+ 				if (user_map == null) {
+ 					user_map = new TreeMap<Integer, List<UserPOJO>>();
+@@ -219,7 +229,10 @@
+ 				
+ 				if(this.onlyOnlineUsers && !pojo.isOnline)
+ 					continue;
+-				
++
++				if (!Util.isEmpty(this.filterName) && !pojo.Username.toUpperCase().contains(this.filterName.toUpperCase()))
++					continue;
++
+ 				Map<Integer, List<UserPOJO>> user_map = org_user_map.get(new Integer(pojo.AD_Org_ID));
+ 				if (user_map == null) {
+ 					user_map = new TreeMap<Integer, List<UserPOJO>>();
+@@ -277,6 +290,9 @@
+ 				if(this.onlyOnlineUsers && !pojo.isOnline)
+ 					continue;
+ 				
++				if (!Util.isEmpty(this.filterName) && !pojo.Username.toUpperCase().contains(this.filterName.toUpperCase()))
++					continue;
++
+ 				Map<Integer, List<UserPOJO>> user_map = client_user_map.get(new Integer(pojo.AD_Client_ID));
+ 				if (user_map == null) {
+ 					user_map = new TreeMap<Integer, List<UserPOJO>>();
+@@ -397,4 +413,10 @@
+ 		refresh();
+ 	}
+ 
++	public void setFilterUserName(String filter) {
++
++		this.filterName = filter;
++		refresh();
++	}
++	
+ }
