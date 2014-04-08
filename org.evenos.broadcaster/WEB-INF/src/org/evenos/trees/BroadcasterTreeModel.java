@@ -59,7 +59,7 @@ public class BroadcasterTreeModel extends DefaultTreeModel<Object> implements Tr
 	public BroadcasterTreeModel(BroadcasterTreeNode<Object> root, int ad_user_id, EventListener<Event> eventListener,
 			boolean onlyOnlineUsers) {
 		super(root);
-		log.warning("BroadcasterTreeModel erstellt");
+		log.fine("BroadcasterTreeModel erstellt");
 		this.eventListener = eventListener;
 		this.ad_user_id = ad_user_id;
 		this.onlyOnlineUsers = onlyOnlineUsers;
@@ -74,7 +74,7 @@ public class BroadcasterTreeModel extends DefaultTreeModel<Object> implements Tr
 	}
 
 	public void refresh() {
-				
+		log.fine("Refreshing BroadcasterTreeModel");
 		removeNodesRecursivly(this.getRoot());
 		getClients();
 		getOrgs();
