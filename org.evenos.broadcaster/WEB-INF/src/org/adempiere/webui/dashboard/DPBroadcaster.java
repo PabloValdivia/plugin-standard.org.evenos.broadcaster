@@ -18,6 +18,7 @@ import org.evenos.windows.BroadcasterMessageWindow;
 import org.idempiere.distributed.IMessageService;
 import org.idempiere.distributed.ITopic;
 import org.idempiere.distributed.ITopicSubscriber;
+import org.zkforge.keylistener.Keylistener;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Desktop;
 import org.zkoss.zk.ui.event.Event;
@@ -38,7 +39,6 @@ public class DPBroadcaster extends DashboardPanel implements EventListener<Event
 	private static final long serialVersionUID = 3956606532708796545L;
 
 	private CLogger log = CLogger.getCLogger(DPBroadcaster.class);
-	
 		
 	private Vlayout layout = new Vlayout();
 	private Div contentArea = new Div();
@@ -86,7 +86,6 @@ public class DPBroadcaster extends DashboardPanel implements EventListener<Event
 
 		initLayout();
 		initComponents();
-		
 		
 		IMessageService service = Service.locator().locate(IMessageService.class).getService();
 		if (service != null) {
@@ -139,8 +138,9 @@ public class DPBroadcaster extends DashboardPanel implements EventListener<Event
 		
 		contentArea.appendChild(tree);
 
-		filterUser.addEventListener(Events.ON_BLUR, this);
 		checkboxIsOnline.addEventListener(Events.ON_CLICK, this);
+		filterUser.addEventListener(Events.ON_BLUR, this);	
+		filterUser.addEventListener(Events.ON_OK, this);
 		filterUser.setHflex("1");
 		
 		//Add Combobox and Checkbox to header area
@@ -183,7 +183,7 @@ public class DPBroadcaster extends DashboardPanel implements EventListener<Event
 			}else{
 				doOnClick(comp);
 			}
-		} else if (event.getName().equals(Events.ON_BLUR)) {
+		} else if (event.getName().equals(Events.ON_BLUR) || event.getName().equals(Events.ON_OK)) {
 			
 			filterUser.setValue(filterUser.getValue().trim());
 			if(!filterUser.getValue().equals(oldFilterValue)){
