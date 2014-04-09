@@ -55,6 +55,7 @@ public class BroadcasterTreeModel extends DefaultTreeModel<Object> implements Tr
 	public static final String ATTR_AD_USER_ID = "ATTR_AD_USER_ID";
 	public static final String ATTR_C_COUNTRY_ID = "ATTR_C_COUNTRY_ID";
 	public static final String ATTR_C_REGION_ID = "ATTR_C_REGION_ID";
+	public static final String ATTR_TREE_NODE = "ATTR_TREE_NODE";
 
 	public BroadcasterTreeModel(BroadcasterTreeNode<Object> root, int ad_user_id, EventListener<Event> eventListener,
 			boolean onlyOnlineUsers) {
@@ -75,12 +76,13 @@ public class BroadcasterTreeModel extends DefaultTreeModel<Object> implements Tr
 
 	public void refresh() {
 		log.fine("Refreshing BroadcasterTreeModel");
+		int[][]tmpPaths = this.getOpenPaths();
 		removeNodesRecursivly(this.getRoot());
 		getClients();
 		getOrgs();
 		getRoles();
 		getLocations();
-		
+		this.addOpenPaths(tmpPaths);
 	}
 
 	private void removeNodesRecursivly(TreeNode<Object> root) {
@@ -366,6 +368,7 @@ public class BroadcasterTreeModel extends DefaultTreeModel<Object> implements Tr
 
 		Treerow tr = new Treerow();
 		item.appendChild(tr);
+		item.setAttribute(ATTR_TREE_NODE, data);
 		tr.addEventListener(Events.ON_CLICK, eventListener);
 
 		Object dataObject = data.getData();
@@ -396,6 +399,7 @@ public class BroadcasterTreeModel extends DefaultTreeModel<Object> implements Tr
 			if (data.isRegion)
 				item.setAttribute(ATTR_C_REGION_ID, new Integer(keynamepair.getKey()));
 
+			
 		} else if (dataObject instanceof UserPOJO) {
 
 			Treecell tc = new Treecell();

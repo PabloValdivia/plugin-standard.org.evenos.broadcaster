@@ -12,6 +12,7 @@ import org.adempiere.webui.util.ServerPushTemplate;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 import org.evenos.trees.BroadcasterTreeModel;
+import org.evenos.trees.BroadcasterTreeNode;
 import org.evenos.windows.BroadcasterMessageWindow;
 import org.idempiere.distributed.IMessageService;
 import org.idempiere.distributed.ITopic;
@@ -165,8 +166,13 @@ public class DPBroadcaster extends DashboardPanel implements EventListener<Event
 			}else if (comp instanceof Treerow) 
 			{
 				Treeitem selectedItem = (Treeitem) comp.getParent();
-			   	selectedItem.setOpen(!selectedItem.isOpen());
-			 
+				BroadcasterTreeNode<Object> node = (BroadcasterTreeNode<Object>)selectedItem.getAttribute(BroadcasterTreeModel.ATTR_TREE_NODE);
+				if(treeModel.isObjectOpened(node))
+					treeModel.removeOpenObject(node);
+				else
+					treeModel.addOpenObject(node);
+				//			   	selectedItem.setOpen(!selectedItem.isOpen());
+				
 			}else{
 				doOnClick(comp);
 			}
