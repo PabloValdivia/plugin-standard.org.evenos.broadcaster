@@ -7,6 +7,7 @@ import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.component.Checkbox;
 import org.adempiere.webui.component.Label;
 import org.adempiere.webui.component.Textbox;
+import org.adempiere.webui.theme.ThemeManager;
 import org.adempiere.webui.util.IServerPushCallback;
 import org.adempiere.webui.util.ServerPushTemplate;
 import org.compiere.util.CLogger;
@@ -14,6 +15,7 @@ import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.evenos.trees.BroadcasterTreeModel;
 import org.evenos.trees.BroadcasterTreeNode;
+import org.evenos.windows.BroadcasterAboutWindow;
 import org.evenos.windows.BroadcasterMessageWindow;
 import org.idempiere.distributed.IMessageService;
 import org.idempiere.distributed.ITopic;
@@ -25,6 +27,7 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Hbox;
+import org.zkoss.zul.Image;
 import org.zkoss.zul.Tree;
 import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.Treerow;
@@ -46,6 +49,8 @@ public class DPBroadcaster extends DashboardPanel implements EventListener<Event
 	private Div headerArea = new Div();
 	private Checkbox checkboxIsOnline = new Checkbox();
 	private Textbox filterUser = new Textbox();
+	
+	private Image about;
 	
 	private String oldFilterValue = "";
 	
@@ -138,21 +143,28 @@ public class DPBroadcaster extends DashboardPanel implements EventListener<Event
 		contentArea.appendChild(tree);
 
 		checkboxIsOnline.addEventListener(Events.ON_CLICK, this);
+		checkboxIsOnline.setTooltiptext(DPBroadcaster_Online_Users_Only_Tooltip);
+		
 		filterUser.addEventListener(Events.ON_BLUR, this);	
 		filterUser.addEventListener(Events.ON_OK, this);
 		filterUser.setHflex("1");
 		
+		
+		about = new Image(ThemeManager.getThemeResource("images/InfoIndicator16.png"));
+		about.addEventListener(Events.ON_CLICK, this);
+		
 		//Add Combobox and Checkbox to header area
+		Label labelUserFilter = new Label(DPBroadcaster_User_Name);
+		Label labelIsOnline = new Label(DPBroadcaster_Online_Users_Only);
+		
 		Hbox box = new Hbox();
 		box.setHflex("1");
-		box.setStyle("margin:5px 5px;");
-		box.appendChild(new Label(DPBroadcaster_User_Name));
+		box.setStyle("margin:5px 5px;");	
+		box.appendChild(labelUserFilter);
 		box.appendChild(filterUser);
-		
-		Label labelIsOnline = new Label(DPBroadcaster_Online_Users_Only);
-		checkboxIsOnline.setTooltiptext(DPBroadcaster_Online_Users_Only_Tooltip);
 		box.appendChild(labelIsOnline);
 		box.appendChild(checkboxIsOnline);
+		box.appendChild(about);
 		headerArea.appendChild(box);
 		
 	}
@@ -181,6 +193,10 @@ public class DPBroadcaster extends DashboardPanel implements EventListener<Event
 					else
 						treeModel.addOpenObject(node);
 					}			
+			}else if(comp.equals(about)){
+				BroadcasterAboutWindow w = new BroadcasterAboutWindow();
+				w.setPage(this.getPage());
+				w.doHighlighted();
 			}else{
 				doOnClick(comp);
 			}
