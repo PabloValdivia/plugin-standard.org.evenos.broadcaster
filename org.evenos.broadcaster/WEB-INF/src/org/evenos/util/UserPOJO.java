@@ -192,79 +192,6 @@ public class UserPOJO {
 		}
 		return orgList;
 	}
-
-	/**
-	 * Get all Users the user can see
-	 * 
-	 * @return
-	 */
-/*	public static Map<Integer, UserPOJO> getUsers(List<Integer> ad_client_ids,
-			List<Integer> ad_org_ids, List<Integer> ad_role_ids) {
-
-		StringBuilder clients = new StringBuilder();
-		StringBuilder orgs = new StringBuilder();
-		StringBuilder roles = new StringBuilder();
-
-		for (Integer ad_client_id : ad_client_ids)
-			clients.append(ad_client_id.toString()).append(",");
-		clients.deleteCharAt(clients.lastIndexOf(","));
-
-		for (Integer ad_org_id : ad_org_ids)
-			orgs.append(ad_org_id.toString()).append(",");
-		orgs.deleteCharAt(orgs.lastIndexOf(","));
-
-		for (Integer ad_role_id : ad_role_ids)
-			roles.append(ad_role_id.toString()).append(",");
-		roles.deleteCharAt(roles.lastIndexOf(","));
-
-		Map<Integer, UserPOJO> userList = new HashMap<Integer, UserPOJO>();
-
-		StringBuilder sql = new StringBuilder();
-		sql.append("select distinct u.ad_user_id, u.name ");
-		sql.append("from ad_user u join ad_user_roles ur on u.ad_user_id = ur.ad_user_id ");
-		sql.append("join ad_role r on r.ad_role_id = ur.ad_role_id ");
-		sql.append("join ad_role_orgaccess roa on roa.ad_role_id = r.ad_role_id ");
-		sql.append("join ad_org o on roa.ad_org_id = o.ad_org_id ");
-		sql.append("where u.ad_client_id in (").append(clients.toString())
-				.append(") ");
-		sql.append("and o.ad_org_id in (").append(orgs.toString()).append(") ");
-		sql.append("and r.ad_role_id in (").append(roles.toString())
-				.append(") ");
-		sql.append("and u.isActive='Y' ");
-		sql.append("and o.isactive='Y' ");
-		sql.append("and r.isactive='Y' ");
-		sql.append("and roa.isactive='Y' ");
-		sql.append("and ur.isactive='Y' ");
-		sql.append("order by u.ad_user_id ");
-
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try {
-			pstmt = DB.prepareStatement(sql.toString(), null);
-			rs = pstmt.executeQuery();
-
-			while (rs.next() && rs != null) {
-				int AD_User_ID = rs.getInt(1);
-				String user_name = rs.getString(2);
-				int isOnline = DB
-						.getSQLValue(
-								null,
-								"SELECT u.AD_User_ID FROM AD_User u join AD_Session s on u.ad_user_id = s.createdby where s.processed = 'N' and u.ad_user_id ="
-										+ AD_User_ID);
-				UserPOJO pojo = new UserPOJO(AD_User_ID, user_name, isOnline);
-				userList.put(new Integer(AD_User_ID), pojo);
-			}
-
-		} catch (SQLException ex) {
-			log.log(Level.SEVERE, sql.toString(), ex);
-		} finally {
-			DB.close(rs, pstmt);
-			rs = null;
-			pstmt = null;
-		}
-		return userList;
-	}
-*/
 	
 	/**
 	 * Get all users the given user can see by his clients, orgs and roles
@@ -347,6 +274,7 @@ public class UserPOJO {
 		sql.append("and r.isactive='Y' ");
 		sql.append("and roa.isactive='Y' ");
 		sql.append("and ur.isactive='Y' ");
+		sql.append("and ur.dpbinvisibleinrole = 'N' ");
 		sql.append("order by u.ad_user_id, c.ad_client_id, o.ad_org_id, r.ad_role_id ");
 
 		PreparedStatement pstmt = null;
@@ -457,6 +385,7 @@ public class UserPOJO {
 		sql.append("and r.isactive='Y' ");
 		sql.append("and roa.isactive='Y' ");
 		sql.append("and ur.isactive='Y' ");
+		sql.append("and ur.dpbinvisibleinrole = 'N' ");
 		sql.append("order by u.ad_user_id ");
 		
 		List<Integer> retVal = new ArrayList<Integer>();
@@ -523,6 +452,7 @@ public class UserPOJO {
 		sql.append("and r.isactive='Y' ");
 		sql.append("and roa.isactive='Y' ");
 		sql.append("and ur.isactive='Y' ");
+		sql.append("and ur.dpbinvisibleinrole = 'N' ");
 		sql.append("order by u.ad_user_id ");
 		
 		List<Integer> retVal = new ArrayList<Integer>();
@@ -603,6 +533,7 @@ public class UserPOJO {
 		sql.append("and r.isactive='Y' ");
 		sql.append("and roa.isactive='Y' ");
 		sql.append("and ur.isactive='Y' ");
+		sql.append("and ur.dpbinvisibleinrole = 'N' ");
 		sql.append("order by u.ad_user_id ");
 		
 		List<Integer> retVal = new ArrayList<Integer>();
