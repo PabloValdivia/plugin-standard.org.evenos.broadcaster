@@ -11,6 +11,7 @@ import org.adempiere.webui.util.IServerPushCallback;
 import org.adempiere.webui.util.ServerPushTemplate;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
+import org.compiere.util.Msg;
 import org.evenos.trees.BroadcasterTreeModel;
 import org.evenos.trees.BroadcasterTreeNode;
 import org.evenos.windows.BroadcasterMessageWindow;
@@ -55,6 +56,10 @@ public class DPBroadcaster extends DashboardPanel implements EventListener<Event
 		
 	private static final String ON_USER_LOGGED_IN_TOPIC = "onUserLoggedInTopic";
 	private static final String ON_USER_LOGGED_OUT_TOPIC = "onUserLoggedOutTopic";
+	
+	private String DPBroadcaster_User_Name = Msg.getMsg(Env.getCtx(), "DPBroadcaster_User_Name");
+	private String DPBroadcaster_Online_Users_Only = Msg.getMsg(Env.getCtx(), "DPBroadcaster_Online_Users_Only");
+	private String DPBroadcaster_Online_Users_Only_Tooltip = Msg.getMsg(Env.getCtx(), "DPBroadcaster_Online_Users_Only_Tooltip");
 	
 	private ServerPushTemplate template;
 	private BroadcasterServerPushCallback callback;
@@ -136,15 +141,17 @@ public class DPBroadcaster extends DashboardPanel implements EventListener<Event
 
 		filterUser.addEventListener(Events.ON_BLUR, this);
 		checkboxIsOnline.addEventListener(Events.ON_CLICK, this);
+		filterUser.setHflex("1");
 		
 		//Add Combobox and Checkbox to header area
 		Hbox box = new Hbox();
-		
-		box.appendChild(new Label("User name"));
+		box.setHflex("1");
+		box.setStyle("margin:5px 5px;");
+		box.appendChild(new Label(DPBroadcaster_User_Name));
 		box.appendChild(filterUser);
 		
-		Label labelIsOnline = new Label("Online Users only");
-		checkboxIsOnline.setTooltiptext("Check thic Checkbox to only display online users");
+		Label labelIsOnline = new Label(DPBroadcaster_Online_Users_Only);
+		checkboxIsOnline.setTooltiptext(DPBroadcaster_Online_Users_Only_Tooltip);
 		box.appendChild(labelIsOnline);
 		box.appendChild(checkboxIsOnline);
 		headerArea.appendChild(box);

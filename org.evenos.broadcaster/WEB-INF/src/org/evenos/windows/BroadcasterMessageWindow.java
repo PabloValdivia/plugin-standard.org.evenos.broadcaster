@@ -11,6 +11,7 @@ import org.adempiere.webui.factory.ButtonFactory;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
+import org.compiere.util.Msg;
 import org.evenos.util.UserPOJO;
 import org.idempiere.broadcast.BroadcastMsgUtil;
 import org.zkoss.zk.ui.event.Event;
@@ -46,6 +47,8 @@ public class BroadcasterMessageWindow extends Window implements EventListener<Ev
 	
 	private CLogger log = CLogger.getCLogger(BroadcasterMessageWindow.class);
 	
+	private String DPBroadcaster_Online_Users_Only = Msg.getMsg(Env.getCtx(), "DPBroadcaster_Online_Users_Only");
+	private String DPBroadcaster_Message_To = Msg.getMsg(Env.getCtx(), "DPBroadcaster_Message_To");
 	
 	public BroadcasterMessageWindow(Integer currentUser, Integer ad_client_id, Integer ad_org_id, Integer ad_role_id, Integer ad_user_id, Integer c_country_id, Integer c_region_id) {
 		super();
@@ -62,12 +65,12 @@ public class BroadcasterMessageWindow extends Window implements EventListener<Ev
 	private void init() {
 	
 		String title = "";
-		if(ad_client_id!=null) title = "Message to " + DB.getSQLValueString(null, "SELECT NAME FROM AD_CLIENT WHERE AD_CLIENT_ID = " + ad_client_id);
-		if(ad_org_id!=null) title = "Message to " + DB.getSQLValueString(null, "SELECT NAME FROM AD_ORG WHERE AD_ORG_ID = " + ad_org_id);
-		if(ad_role_id!=null) title = "Message to " + DB.getSQLValueString(null, "SELECT NAME FROM AD_ROLE WHERE AD_ROLE_ID = " + ad_role_id);
-		if(ad_user_id!=null) title = "Message to " + DB.getSQLValueString(null, "SELECT NAME FROM AD_USER WHERE AD_USER_ID = " + ad_user_id);
-		if(c_country_id!=null) title = "Message to " + DB.getSQLValueString(null, "SELECT NAME FROM C_Country WHERE C_COUNTRY_ID = " + c_country_id);
-		if(c_region_id!=null) title = "Message to " + DB.getSQLValueString(null, "SELECT NAME FROM C_Region WHERE C_REGION_ID = " + c_region_id);
+		if(ad_client_id!=null) title = DPBroadcaster_Message_To + " " + DB.getSQLValueString(null, "SELECT NAME FROM AD_CLIENT WHERE AD_CLIENT_ID = " + ad_client_id);
+		if(ad_org_id!=null) title = DPBroadcaster_Message_To + " " + DB.getSQLValueString(null, "SELECT NAME FROM AD_ORG WHERE AD_ORG_ID = " + ad_org_id);
+		if(ad_role_id!=null) title = DPBroadcaster_Message_To + " " + DB.getSQLValueString(null, "SELECT NAME FROM AD_ROLE WHERE AD_ROLE_ID = " + ad_role_id);
+		if(ad_user_id!=null) title = DPBroadcaster_Message_To + " " + DB.getSQLValueString(null, "SELECT NAME FROM AD_USER WHERE AD_USER_ID = " + ad_user_id);
+		if(c_country_id!=null) title = DPBroadcaster_Message_To + " " + DB.getSQLValueString(null, "SELECT NAME FROM C_Country WHERE C_COUNTRY_ID = " + c_country_id);
+		if(c_region_id!=null) title = DPBroadcaster_Message_To + " " + DB.getSQLValueString(null, "SELECT NAME FROM C_Region WHERE C_REGION_ID = " + c_region_id);
 		
 		this.setPosition("center");
 		this.setTitle(title);
@@ -113,7 +116,7 @@ public class BroadcasterMessageWindow extends Window implements EventListener<Ev
 		text.setParent(div);
 		
 		Hbox box = new Hbox();
-		Label lAllUsers = new Label("Online Users only");
+		Label lAllUsers = new Label(DPBroadcaster_Online_Users_Only);
 		onlineUsers = new Checkbox();
 		lAllUsers.setParent(box);
 		onlineUsers.setParent(box);

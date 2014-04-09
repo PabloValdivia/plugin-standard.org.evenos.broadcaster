@@ -11,6 +11,7 @@ import org.compiere.model.MRegion;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 import org.compiere.util.KeyNamePair;
+import org.compiere.util.Msg;
 import org.compiere.util.Util;
 import org.evenos.util.UserPOJO;
 import org.zkoss.zk.ui.event.Event;
@@ -57,6 +58,12 @@ public class BroadcasterTreeModel extends DefaultTreeModel<Object> implements Tr
 	public static final String ATTR_C_REGION_ID = "ATTR_C_REGION_ID";
 	public static final String ATTR_TREE_NODE = "ATTR_TREE_NODE";
 
+	private String DPBroadcaster_Clients = Msg.getMsg(Env.getCtx(), "DPBroadcaster_Clients");
+	private String DPBroadcaster_Organizations = Msg.getMsg(Env.getCtx(), "DPBroadcaster_Organizations");
+	private String DPBroadcaster_Roles = Msg.getMsg(Env.getCtx(), "DPBroadcaster_Roles");
+	private String DPBroadcaster_Countries = Msg.getMsg(Env.getCtx(), "DPBroadcaster_Countries");
+	private String DPBroadcaster_Tooltip_Message_To = Msg.getMsg(Env.getCtx(), "DPBroadcaster_Tooltip_Message_To");
+
 	public BroadcasterTreeModel(BroadcasterTreeNode<Object> root, int ad_user_id, EventListener<Event> eventListener,
 			boolean onlyOnlineUsers) {
 		super(root);
@@ -76,7 +83,7 @@ public class BroadcasterTreeModel extends DefaultTreeModel<Object> implements Tr
 
 	public void refresh() {
 		log.fine("Refreshing BroadcasterTreeModel");
-		int[][]tmpPaths = this.getOpenPaths();
+		int[][] tmpPaths = this.getOpenPaths();
 		removeNodesRecursivly(this.getRoot());
 		getClients();
 		getOrgs();
@@ -96,8 +103,7 @@ public class BroadcasterTreeModel extends DefaultTreeModel<Object> implements Tr
 	}
 
 	private void getLocations() {
-		BroadcasterTreeNode<Object> countries = new BroadcasterTreeNode<Object>("Countries",
-				new ArrayList<TreeNode<Object>>());
+		BroadcasterTreeNode<Object> countries = new BroadcasterTreeNode<Object>(DPBroadcaster_Countries, new ArrayList<TreeNode<Object>>());
 
 		Map<Integer, Map<Integer, Map<Integer, List<UserPOJO>>>> country_region_user_map = new TreeMap<Integer, Map<Integer, Map<Integer, List<UserPOJO>>>>();
 		for (List<UserPOJO> users_list : users.values()) {
@@ -179,7 +185,7 @@ public class BroadcasterTreeModel extends DefaultTreeModel<Object> implements Tr
 	}
 
 	private void getRoles() {
-		BroadcasterTreeNode<Object> roles = new BroadcasterTreeNode<Object>("Roles", new ArrayList<TreeNode<Object>>());
+		BroadcasterTreeNode<Object> roles = new BroadcasterTreeNode<Object>(DPBroadcaster_Roles, new ArrayList<TreeNode<Object>>());
 		this.getRoot().add(roles);
 
 		Map<Integer, Map<Integer, List<UserPOJO>>> role_user_map = new TreeMap<Integer, Map<Integer, List<UserPOJO>>>();
@@ -237,7 +243,7 @@ public class BroadcasterTreeModel extends DefaultTreeModel<Object> implements Tr
 	}
 
 	private void getOrgs() {
-		BroadcasterTreeNode<Object> orgs = new BroadcasterTreeNode<Object>("Organizations",
+		BroadcasterTreeNode<Object> orgs = new BroadcasterTreeNode<Object>(DPBroadcaster_Organizations,
 				new ArrayList<TreeNode<Object>>());
 		this.getRoot().add(orgs);
 
@@ -297,7 +303,7 @@ public class BroadcasterTreeModel extends DefaultTreeModel<Object> implements Tr
 
 	private void getClients() {
 
-		BroadcasterTreeNode<Object> clients = new BroadcasterTreeNode<Object>("Clients",
+		BroadcasterTreeNode<Object> clients = new BroadcasterTreeNode<Object>(DPBroadcaster_Clients,
 				new ArrayList<TreeNode<Object>>());
 		this.getRoot().add(clients);
 
@@ -386,7 +392,7 @@ public class BroadcasterTreeModel extends DefaultTreeModel<Object> implements Tr
 			link.setLabel(keynamepair.getName());
 			link.addEventListener(Events.ON_CLICK, eventListener);
 
-			item.setTooltiptext("Send broadcast message to " + keynamepair.getName());
+			item.setTooltiptext(DPBroadcaster_Tooltip_Message_To + " " + keynamepair.getName());
 
 			if (data.isClient)
 				item.setAttribute(ATTR_AD_CLIENT_ID, new Integer(keynamepair.getKey()));
@@ -399,7 +405,6 @@ public class BroadcasterTreeModel extends DefaultTreeModel<Object> implements Tr
 			if (data.isRegion)
 				item.setAttribute(ATTR_C_REGION_ID, new Integer(keynamepair.getKey()));
 
-			
 		} else if (dataObject instanceof UserPOJO) {
 
 			Treecell tc = new Treecell();
@@ -417,7 +422,7 @@ public class BroadcasterTreeModel extends DefaultTreeModel<Object> implements Tr
 			link.setLabel(pojo.Username);
 			link.addEventListener(Events.ON_CLICK, eventListener);
 
-			item.setTooltiptext("Send broadcast message to " + pojo.Username);
+			item.setTooltiptext(DPBroadcaster_Tooltip_Message_To + " " + pojo.Username);
 			item.setAttribute(ATTR_AD_USER_ID, pojo.AD_User_ID);
 		}
 
@@ -441,18 +446,18 @@ public class BroadcasterTreeModel extends DefaultTreeModel<Object> implements Tr
 
 		this.filterName = filter;
 		refresh();
-		
+
 	}
 
 	public void userLoggedIn(Integer user_id) {
 		List<UserPOJO> user_list = users.get(user_id);
-		for(UserPOJO pojo : user_list)
+		for (UserPOJO pojo : user_list)
 			pojo.isOnline = true;
 	}
 
 	public void userLoggedOut(Integer user_id) {
 		List<UserPOJO> user_list = users.get(user_id);
-		for(UserPOJO pojo : user_list)
+		for (UserPOJO pojo : user_list)
 			pojo.isOnline = false;
 	}
 
