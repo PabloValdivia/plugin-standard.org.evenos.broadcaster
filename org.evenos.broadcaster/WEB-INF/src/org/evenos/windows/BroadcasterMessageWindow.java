@@ -200,6 +200,9 @@ public class BroadcasterMessageWindow extends Window implements EventListener<Ev
 
 	private void broadcastUser(int ad_user_id) {
 
+		if(ad_user_id == this.currentUser.intValue())
+			return;
+		
 		if(onlineUsers.isChecked()){
 			int val = DB.getSQLValue(null, "select u.ad_user_id from ad_user u join ad_session s on s.createdby = u.ad_user_id where s.processed = 'N' and u.ad_user_id = "+ad_user_id);
 			if(val <= 0)
