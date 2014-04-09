@@ -18,7 +18,6 @@ import org.evenos.windows.BroadcasterMessageWindow;
 import org.idempiere.distributed.IMessageService;
 import org.idempiere.distributed.ITopic;
 import org.idempiere.distributed.ITopicSubscriber;
-import org.zkforge.keylistener.Keylistener;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Desktop;
 import org.zkoss.zk.ui.event.Event;
@@ -173,13 +172,15 @@ public class DPBroadcaster extends DashboardPanel implements EventListener<Event
 			}else if (comp instanceof Treerow) 
 			{
 				Treeitem selectedItem = (Treeitem) comp.getParent();
-				BroadcasterTreeNode<Object> node = (BroadcasterTreeNode<Object>)selectedItem.getAttribute(BroadcasterTreeModel.ATTR_TREE_NODE);
-				if(treeModel.isObjectOpened(node))
-					treeModel.removeOpenObject(node);
-				else
-					treeModel.addOpenObject(node);
-				//			   	selectedItem.setOpen(!selectedItem.isOpen());
-				
+				Object attribue = selectedItem.getAttribute(BroadcasterTreeModel.ATTR_TREE_NODE);
+				if(attribue instanceof BroadcasterTreeNode<?>){
+					@SuppressWarnings("unchecked")
+					BroadcasterTreeNode<Object> node = (BroadcasterTreeNode<Object>)attribue;
+					if(treeModel.isObjectOpened(node))
+						treeModel.removeOpenObject(node);
+					else
+						treeModel.addOpenObject(node);
+					}			
 			}else{
 				doOnClick(comp);
 			}
