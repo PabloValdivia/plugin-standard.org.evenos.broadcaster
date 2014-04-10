@@ -152,6 +152,7 @@ public class DPBroadcaster extends DashboardPanel implements EventListener<Event
 		
 		about = new Image(ThemeManager.getThemeResource("images/InfoIndicator16.png"));
 		about.addEventListener(Events.ON_CLICK, this);
+		about.setStyle("cursor: pointer;");
 		
 		//Add Combobox and Checkbox to header area
 		Label labelUserFilter = new Label(DPBroadcaster_User_Name);
