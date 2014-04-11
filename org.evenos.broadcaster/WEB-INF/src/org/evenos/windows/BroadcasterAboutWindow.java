@@ -1,15 +1,10 @@
 package org.evenos.windows;
 
-import org.adempiere.webui.LayoutUtils;
-import org.adempiere.webui.component.Textbox;
 import org.adempiere.webui.component.ToolBarButton;
 import org.adempiere.webui.component.Window;
-import org.adempiere.webui.theme.ThemeManager;
-import org.compiere.Adempiere;
 import org.zkoss.zhtml.Text;
 import org.zkoss.zul.Borderlayout;
 import org.zkoss.zul.Center;
-import org.zkoss.zul.Div;
 import org.zkoss.zul.Image;
 import org.zkoss.zul.Separator;
 import org.zkoss.zul.Vbox;
