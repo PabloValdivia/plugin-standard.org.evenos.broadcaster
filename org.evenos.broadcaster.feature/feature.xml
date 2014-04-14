@@ -16,6 +16,13 @@
       [Enter License Description here.]
    </license>
 
+   <requires>
+      <import plugin="org.adempiere.ui.zk" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.adempiere.plugin.utils" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.adempiere.base" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.osgi.services" version="3.3.0" match="greaterOrEqual"/>
+   </requires>
+
    <plugin
          id="org.evenos.broadcaster"
          download-size="0"
